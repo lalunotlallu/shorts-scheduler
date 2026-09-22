@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import requests
 import urllib.error
@@ -11,17 +12,25 @@ TOKEN_FILE = BASE_DIR / "tiktok_token.json"
 def load_env():
     values = {}
     env_file = BASE_DIR / ".env"
+
+    if not env_file.exists():
+        return values
+
     for line in env_file.read_text(encoding="utf-8").splitlines():
         line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            key, value = line.split("=", 1)
-            values[key.strip()] = value.strip()
+
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        values[key.strip()] = value.strip()
+
     return values
 
 
 ENV = load_env()
-CLIENT_KEY = ENV["TIKTOK_CLIENT_KEY"]
-CLIENT_SECRET = ENV["TIKTOK_CLIENT_SECRET"]
+CLIENT_KEY = ENV.get("TIKTOK_CLIENT_KEY") or os.getenv("TIKTOK_CLIENT_KEY")
+CLIENT_SECRET = ENV.get("TIKTOK_CLIENT_SECRET") or os.getenv("TIKTOK_CLIENT_SECRET")
 
 INIT_URL = "https://open.tiktokapis.com/v2/post/publish/video/init/"
 STATUS_URL = "https://open.tiktokapis.com/v2/post/publish/status/fetch/"
