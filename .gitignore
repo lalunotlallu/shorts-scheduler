@@ -1,0 +1,7 @@
+.env
+tiktok_token.json
+__pycache__/
+*.pyc
+schedule.json
+schedule.backup.json
+schedule.before-caption-test.json
