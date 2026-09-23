@@ -1,4 +1,5 @@
 import sys
+import os
 import subprocess
 sys.path.insert(0, r"E:\ShortsScheduler")
 from uploader import load_token, get_creator_info
@@ -8,6 +9,14 @@ from pathlib import Path
 
 import streamlit as st
 
+for key in [
+    "TIKTOK_CLIENT_KEY",
+    "TIKTOK_CLIENT_SECRET",
+    "TIKTOK_ACCESS_TOKEN",
+    "TIKTOK_REFRESH_TOKEN",
+]:
+    if key in st.secrets:
+        os.environ[key] = st.secrets[key]
 
 SHORTS_FOLDER = Path(r"E:\Shorts")
 SCHEDULE_FILE = Path(r"E:\ShortsScheduler\schedule.json")
