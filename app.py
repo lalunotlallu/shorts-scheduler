@@ -27,6 +27,8 @@ st.caption("Schedule and control your Shorts publishing queue.")
 # TikTok account
 # --------------------------------------------------
 
+privacy_options = []
+tiktok_privacy = None
 st.header("🎵 TikTok")
 
 try:
