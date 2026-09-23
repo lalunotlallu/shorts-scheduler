@@ -41,11 +41,20 @@ CHUNK_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
 def load_token():
-    if not TOKEN_FILE.exists():
-        raise RuntimeError("tiktok_token.json not found.")
+    if TOKEN_FILE.exists():
+        with TOKEN_FILE.open("r", encoding="utf-8") as f:
+            return json.load(f)
 
-    with TOKEN_FILE.open("r", encoding="utf-8") as f:
-        return json.load(f)
+    access_token = os.getenv("TIKTOK_ACCESS_TOKEN")
+    refresh_token = os.getenv("TIKTOK_REFRESH_TOKEN")
+
+    if access_token:
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        }
+
+    raise RuntimeError("TikTok access token not found.")
 def save_token(token_data):
     with TOKEN_FILE.open("w", encoding="utf-8") as f:
         json.dump(token_data, f, indent=2)
